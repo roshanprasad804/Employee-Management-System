@@ -2,6 +2,7 @@ package com.springbootproject.springbootfirstproject.service.impl;
 
 import com.springbootproject.springbootfirstproject.dto.EmployeeDto;
 import com.springbootproject.springbootfirstproject.entity.Employee;
+import com.springbootproject.springbootfirstproject.exception.ResourceNotFoundException;
 import com.springbootproject.springbootfirstproject.mapper.EmployeeMapper;
 import com.springbootproject.springbootfirstproject.repository.EmployeeRepository;
 import com.springbootproject.springbootfirstproject.service.EmployeeService;
@@ -22,5 +23,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee savedEmployee = employeeRepository.save(employee);
         log.info("saved entity",savedEmployee);
         return EmployeeMapper.mapToEmployeeDto(savedEmployee);
+    }
+
+    @Override
+    public EmployeeDto getEmployeeById(Long employeeId) {
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Employee does not exist with the given id"+ employeeId));
+        return EmployeeMapper.mapToEmployeeDto(employee);
     }
 }
