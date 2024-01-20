@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -25,7 +24,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto createEmployee(EmployeeDto employeeDto) {
         Employee employee = EmployeeMapper.mapToEmployee(employeeDto);
         Employee savedEmployee = employeeRepository.save(employee);
-        log.info("saved entity",savedEmployee);
+        log.info("saved entity"+savedEmployee);
         return EmployeeMapper.mapToEmployeeDto(savedEmployee);
     }
 
@@ -55,5 +54,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee updatedEmployeeDetails = employeeRepository.save(employee);
         return EmployeeMapper.mapToEmployeeDto(updatedEmployeeDetails);
+    }
+
+    @Override
+    public void deleteEmployee(Long employeeId) {
+        employeeRepository.findById(employeeId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Employee does not exist with the given id"+ employeeId));
+        employeeRepository.deleteById(employeeId);
     }
 }
