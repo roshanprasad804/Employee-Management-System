@@ -1,0 +1,14 @@
+<div class="employee-container">
+    <h2>Employee Management System</h2>
+    <button class="add-button" (click)="addEmployee()">Add Employee</button>
+    <div *ngFor="let employee of employees" class="employee-card">
+      <div class="employee-details">
+        <div>
+          <span class="employee-name">{{ employee.name }}</span>
+          <span class="employee-department">{{ employee.department }}</span>
+        </div>
+        <button class="delete-button" (click)="deleteEmployee(employee)">Delete</button>
+      </div>
+    </div>
+  </div>
+  
