@@ -1,11 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { EmployeeService } from '../services/employee.service';
+import { MatInputModule } from '@angular/material/input';
+
+export interface Employee {
+    id:number;
+    name:string;
+    email:string;
+}
 
 @Component({
   selector: 'app-employee',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatInputModule],
   templateUrl: './employee.component.html',
   styleUrl: './employee.component.css'
 })
@@ -18,21 +25,22 @@ export class EmployeeComponent {
     this.getEmployees();
   }
 
-  employees: any[] = [
-    { id: 1, name: 'John Doe', department: 'IT' },
-    { id: 2, name: 'Jane Smith', department: 'HR' },
-    { id: 3, name: 'Alice Johnson', department: 'Finance' }
-  ];
+  employees!: Employee[];
+  isAddClicked = false;
 
   getEmployees() {
     this.employeeservice.getEmployees().subscribe((data:any) => {
-      console.log('data',data);
-      // this.employees.map = data;
+      this.employees = data;
+      console.log('employees',this.employees);
+      this.employees.map((val:any) => {
+        val.name = val.firstName + ' ' + val.lastName;
+      })
     });
   }
 
   addEmployee() {
-    
+    this.isAddClicked = true;
+    // this.employeeservice.addEmployee()
   }
 
   deleteEmployee(employee: any) {
